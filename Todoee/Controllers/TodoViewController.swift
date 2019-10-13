@@ -7,23 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoViewController: UITableViewController {
 
     var itemArray = [TodoItem]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("TodoItems.plist")
+//    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("TodoItems.plist")
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let data = try? Data(contentsOf: dataFilePath!){
-            let deencoder = PropertyListDecoder()
-            do {
-                itemArray = try deencoder.decode([TodoItem].self, from: data)
-            } catch {
-                print("Error Loading Data: \(error)")
-            }
-        }
+        loadData()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -46,16 +42,13 @@ class TodoViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        saveData()
         
         tableView.deselectRow(at: indexPath, animated: true)
 
-        tableView.reloadData()
-
+        saveData()
     }
     
     //Mark - Add Todo Items
-    
     @IBAction func buttonBarItemPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
@@ -70,28 +63,59 @@ class TodoViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Add Todo Item", style: .default, handler: { (action) in
             
             if textField.text! != "" {
-                let newTodo = TodoItem()
+                let newTodo = TodoItem(context: self.context)
                 newTodo.todoName = textField.text!
+                newTodo.done = false
                 self.itemArray.append(newTodo)
                 
                 self.saveData()
-                
-                self.tableView.reloadData()
             }
         }))
         
         present(alert, animated: true, completion: nil)
-        
     }
     
     func saveData() {
-        let encoder = PropertyListEncoder()
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         } catch {
             print("Error Saving Todos: \(error)")
         }
+
+        self.tableView.reloadData()
+    }
+    
+    func loadData(with request: NSFetchRequest<TodoItem> = TodoItem.fetchRequest()){
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error Loading Data: \(error)")
+        }
+
+        tableView.reloadData()
     }
 }
 
+//MARK - Search Delegate
+
+extension TodoViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        let request : NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
+        request.predicate = NSPredicate(format: "todoName CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "todoName", ascending: true)]
+        
+        loadData(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text!.count == 0 {
+            loadData()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
