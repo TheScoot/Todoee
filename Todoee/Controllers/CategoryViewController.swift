@@ -36,6 +36,17 @@ class CategoryViewController: UITableViewController {
         return categoryArray.count
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "todoItemSegue", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destVC = segue.destination as! TodoViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destVC.selectedCategory = categoryArray[indexPath.row]
+        }
+    }
     //MARK - Data Funcs
     func saveData() {
         do {

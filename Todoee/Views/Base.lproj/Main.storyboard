@@ -38,7 +38,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="c4u-PN-boJ" kind="show" identifier="mainSegue" id="7em-gd-mEg"/>
+                        <segue destination="c4u-PN-boJ" kind="show" identifier="todoItemSegue" id="7em-gd-mEg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bdX-Ty-W0k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -107,7 +107,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="GBk-sG-aaq" kind="relationship" relationship="rootViewController" id="2JM-JC-QBV"/>
+                        <segue destination="GBk-sG-aaq" kind="relationship" relationship="rootViewController" destinationCreationSelector="mainSegue" id="2JM-JC-QBV"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3nq-nV-fcg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
