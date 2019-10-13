@@ -13,6 +13,7 @@
 		E7A19071235269F30078FF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7A1906F235269F30078FF7F /* Main.storyboard */; };
 		E7A19073235269F60078FF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7A19072235269F60078FF7F /* Assets.xcassets */; };
 		E7A19076235269F60078FF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7A19074235269F60078FF7F /* LaunchScreen.storyboard */; };
+		E7A1907E2352B6240078FF7F /* TodoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A1907D2352B6240078FF7F /* TodoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		E7A19072235269F60078FF7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7A19075235269F60078FF7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7A19077235269F60078FF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7A1907D2352B6240078FF7F /* TodoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				E7A1906B235269F30078FF7F /* SceneDelegate.swift */,
 				E7A1906D235269F30078FF7F /* TodoViewController.swift */,
 				E7A1906F235269F30078FF7F /* Main.storyboard */,
+				E7A1907D2352B6240078FF7F /* TodoModel.swift */,
 				E7A19072235269F60078FF7F /* Assets.xcassets */,
 				E7A19074235269F60078FF7F /* LaunchScreen.storyboard */,
 				E7A19077235269F60078FF7F /* Info.plist */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7A1906E235269F30078FF7F /* TodoViewController.swift in Sources */,
+				E7A1907E2352B6240078FF7F /* TodoModel.swift in Sources */,
 				E7A1906A235269F30078FF7F /* AppDelegate.swift in Sources */,
 				E7A1906C235269F30078FF7F /* SceneDelegate.swift in Sources */,
 			);
