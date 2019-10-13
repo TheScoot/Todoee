@@ -10,11 +10,15 @@ import UIKit
 
 class TodoViewController: UITableViewController {
 
-    var itemArray = ["Home Depot", "Walgreens", "Safeway"]
+    var itemArray = [String]()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        if let items = defaults.array(forKey: "TodoItems") as? [String] {
+            itemArray = items
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,6 +65,7 @@ class TodoViewController: UITableViewController {
             
             if textField.text! != "" {
                 self.itemArray.append(textField.text!)
+                self.defaults.set(self.itemArray, forKey: "TodoItems")
                 self.tableView.reloadData()
             }
         }))
