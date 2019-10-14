@@ -36,18 +36,30 @@ class TodoViewController: SwipeTableViewController {
             guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Bar is not ready")}
             
             if let navBarColor = UIColor(hexString: color) {
-                navBar.barTintColor = navBarColor
+                if #available(iOS 13.0, *) {
+                    let app = UINavigationBarAppearance().self
+                    
+                    app.backgroundColor = navBarColor
+                    
+                    navBar.standardAppearance = app
+                    navBar.compactAppearance = app
+                    navBar.scrollEdgeAppearance = app
+                    
+                } else {
+                    navBar.barTintColor = navBarColor
+                }
                 navBar.tintColor = UIColor.init(contrastingBlackOrWhiteColorOn: navBarColor, isFlat: true)
                 navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.init(contrastingBlackOrWhiteColorOn: navBarColor, isFlat: true)!]
                 searchBar.barTintColor = navBarColor
+                searchBar.searchTextField.backgroundColor = .white
             }
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-
+        
         if let item = todoItems?[indexPath.row] {
             if let color = UIColor(hexString: selectedCategory?.hexcolor)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(todoItems!.count)) {
                 cell.backgroundColor = color
