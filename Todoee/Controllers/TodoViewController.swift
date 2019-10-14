@@ -8,9 +8,11 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class TodoViewController: SwipeTableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     let realm = try! Realm()
     
     var selectedCategory : Category? {
@@ -21,17 +23,36 @@ class TodoViewController: SwipeTableViewController {
     
     var todoItems : Results<TodoItem>?
     
-    //    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("TodoItems.plist")
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let color = selectedCategory?.hexcolor {
+            
+            title = selectedCategory?.name
+            
+            guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Bar is not ready")}
+            
+            if let navBarColor = UIColor(hexString: color) {
+                navBar.barTintColor = navBarColor
+                navBar.tintColor = UIColor.init(contrastingBlackOrWhiteColorOn: navBarColor, isFlat: true)
+                navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.init(contrastingBlackOrWhiteColorOn: navBarColor, isFlat: true)!]
+                searchBar.barTintColor = navBarColor
+            }
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
         if let item = todoItems?[indexPath.row] {
+            if let color = UIColor(hexString: selectedCategory?.hexcolor)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(todoItems!.count)) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = UIColor.init(contrastingBlackOrWhiteColorOn: color, isFlat: true)
+            }
             cell.textLabel?.text = item.todoName
             cell.accessoryType = item.done ? .checkmark : .none
         } else {
